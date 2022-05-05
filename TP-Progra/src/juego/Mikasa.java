@@ -9,6 +9,7 @@ public class Mikasa {
 	private double y;
 	private double ancho;
 	private double alto;
+	//private double angulo;
 	
 	public Mikasa(double x, double y, double ancho, double alto) {
 		this.x = x;
@@ -17,6 +18,19 @@ public class Mikasa {
 		this.alto = alto;
 	}
 	public void dibujar(Entorno e) {
-		e.dibujarRectangulo(x, y, ancho, alto, 0, Color.ORANGE);
+		e.dibujarRectangulo(x, y, ancho, alto, 0/*angulo*/, Color.ORANGE);
+	}
+	//movimiento
+	public void moverArriba() {
+		this.y -= 2;
+	}
+	public void moverAbajo() {
+		this.y += 2;
+	}
+	public void moverDerecha() {
+		this.x += 2;
+	}
+	public void moverIzquierda() {
+		this.x -= 2;
 	}
 }
