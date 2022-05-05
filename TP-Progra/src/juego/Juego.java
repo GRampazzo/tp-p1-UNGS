@@ -29,6 +29,18 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 		// Procesamiento de un instante de tiempo
 		// ...
+		if (entorno.estaPresionada('w'))
+			mikasa.moverArriba();
+		
+		if (entorno.estaPresionada('s')) 
+			mikasa.moverAbajo();
+		
+		if (entorno.estaPresionada('a'))
+			mikasa.moverIzquierda();
+		
+		if (entorno.estaPresionada('d'))
+			mikasa.moverDerecha();
+		
 		mikasa.dibujar(entorno);
 		
 	}
