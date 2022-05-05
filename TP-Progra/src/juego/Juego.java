@@ -7,11 +7,12 @@ public class Juego extends InterfaceJuego {
 
 	// El objeto Entorno que controla el tiempo y otros
 	private Entorno entorno;
+	private Mikasa mikasa;
 	
 	public Juego() {
 		// Inicializa el objeto entorno
-		this.entorno = new Entorno(this, "Sakura Ikebana Delivery - Grupo N - Apellido1 - Apellido2 -Apellido3 - V0.01", 800, 600);
-		
+		this.entorno = new Entorno(this, "Sakura Ikebana Delivery - Grupo 12 - Huayta - Apellido2 -Apellido3 - V0.01", 800, 600);
+		this.mikasa = new Mikasa(100, 200, 20, 50);
 		// Inicializar lo que haga falta para el juego
 		// ...
 
@@ -28,6 +29,7 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 		// Procesamiento de un instante de tiempo
 		// ...
+		mikasa.dibujar(entorno);
 		
 	}
 	
