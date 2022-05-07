@@ -12,7 +12,7 @@ public class Juego extends InterfaceJuego {
 	public Juego() {
 		// Inicializa el objeto entorno
 		this.entorno = new Entorno(this, "Sakura Ikebana Delivery - Grupo 12 - Huayta - Apellido2 -Apellido3 - V0.01", 800, 600);
-		this.mikasa = new Mikasa(100, 200, 20, 50);
+		this.mikasa = new Mikasa(100, 200, 20, 50,0);
 		// Inicializar lo que haga falta para el juego
 		// ...
 
@@ -30,10 +30,7 @@ public class Juego extends InterfaceJuego {
 		// Procesamiento de un instante de tiempo
 		// ...
 		if (entorno.estaPresionada('w'))
-			mikasa.moverArriba();
-		
-		if (entorno.estaPresionada('s')) 
-			mikasa.moverAbajo();
+			mikasa.moverAdelante();
 		
 		if (entorno.estaPresionada('a'))
 			mikasa.moverIzquierda();
