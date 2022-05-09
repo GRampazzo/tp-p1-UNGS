@@ -25,21 +25,22 @@ public class Mikasa {
 
 	// movimiento
 	public void moverAdelante() {
-		this.x += Math.cos(this.angulo)*2;
-		this.y += Math.sin(this.angulo)*2;
-		if (this.x > 900) {
-			this.x = -100;
+		if (this.x > 20 && ((this.x + this.ancho) < 800) && this.y < 590 && ((this.y - this.alto) > 0)) {
+			this.x += Math.cos(this.angulo) * 1.5;
+			this.y += Math.sin(this.angulo) * 1.5;
 		}
-		if (this.x < -100) {
-			this.x = 900;
+		if(this.x <= 20){
+			this.x = this.x+10;
 		}
-		if (this.y > 650) {
-			this.y = -50;
+		if ((this.x + this.ancho) >= 800){	
+			this.x= this.x-10;
 		}
-		if (this.y < -50) {
-			this.y = 650;
+		if (this.y>=580) {
+			this.y =this.y-10; 
 		}
-
+		if ((this.y-this.alto) <= 0){
+			this.y= this.y+10;
+		}
 	}
 
 
@@ -50,4 +51,5 @@ public class Mikasa {
 	public void moverIzquierda() {
 		this.angulo -= 0.08;
 	}
+	
 }
