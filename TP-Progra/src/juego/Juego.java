@@ -10,6 +10,7 @@ public class Juego extends InterfaceJuego {
 	// El objeto Entorno que controla el tiempo y otros
 	private Entorno entorno;
 	private Mikasa mikasa;
+	private Tiempo tiempo;
 	private int cantObs;
 	private Obstaculos [] obs;
 	
@@ -17,6 +18,7 @@ public class Juego extends InterfaceJuego {
 		// Inicializa el objeto entorno
 		this.entorno = new Entorno(this, "Sakura Ikebana Delivery - Grupo 12 - Huayta - Rampazzo -Apellido3 - V0.01", 800, 600);
 		this.mikasa = new Mikasa(400, 300, 40, 40,0);
+		this.tiempo = new Tiempo(true, 0);
 		this.cantObs=5;
 		this.iniciarObs();
 		// Inicializar lo que haga falta para el juego
@@ -35,21 +37,36 @@ public class Juego extends InterfaceJuego {
 	public void tick() {
 		// Procesamiento de un instante de tiempo
 		// ...
-		if (entorno.estaPresionada('w'))
-			mikasa.moverAdelante();
+		if (tiempo.isInicia()) {
+			if (entorno.estaPresionada('w'))
+				mikasa.moverAdelante();
 		
-		if (entorno.estaPresionada('a'))
-			mikasa.moverIzquierda();
+			if (entorno.estaPresionada('a'))
+				mikasa.moverIzquierda();
 		
-		if (entorno.estaPresionada('d'))
-			mikasa.moverDerecha();
+			if (entorno.estaPresionada('d'))
+				mikasa.moverDerecha();
 		
-		mikasa.dibujar(entorno);
+			mikasa.dibujar(entorno);
 		
-		for (Obstaculos o: this.obs) {
-			o.dibujar(entorno);
+			for (Obstaculos o: this.obs) {
+				o.dibujar(entorno);
+			}
+			
+			//cronometro
+			tiempo.setContar(0.015);
+			
+			//si queres controlar el tiempo en el eclipse:
+			//System.out.println(tiempo.getContar());
+			
+			//marca fin del juego
+			if (tiempo.getContar() >= 30 && tiempo.getContar() <= 31) {
+				this.tiempo = new Tiempo(false, 0);
+			}
+		} else {
+			entorno.cambiarFont("Arial", 32, Color.WHITE);
+			entorno.escribirTexto("GAME OVER", 300, 300);
 		}
-
 		
 	}
 	private void iniciarObs() {
