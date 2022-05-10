@@ -1,5 +1,7 @@
 package juego;
 
+import java.util.Random;
+
 import entorno.Entorno;
 import entorno.InterfaceJuego;
 
@@ -52,6 +54,7 @@ public class Juego extends InterfaceJuego {
 	}
 	private void iniciarObs() {
 		Obstaculos[] lista = new Obstaculos[this.cantObs];
+		Random r=new Random();
 		int xPiso = 370;
 		int yPiso = 500;
 		int ancho = 80;
@@ -59,8 +62,11 @@ public class Juego extends InterfaceJuego {
 		for (int i = 0; i < this.cantObs; i++) {
 			Obstaculos p = new Obstaculos (xPiso, yPiso, ancho, alto);
 			lista[i] = p;
-			yPiso = yPiso - 90;
-			xPiso = xPiso == 600 ? 200 : 600;	
+			yPiso = yPiso - 100;
+			xPiso = r.nextInt(600);
+			if (xPiso>=350 && xPiso<450) {
+				xPiso=r.nextInt(600);
+			}
 		}
 		this.obs = lista;
 	}
