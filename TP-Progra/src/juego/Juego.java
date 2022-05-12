@@ -1,6 +1,7 @@
 package juego;
 
 import java.util.Random;
+import java.awt.Color;
 
 import entorno.Entorno;
 import entorno.InterfaceJuego;
@@ -11,6 +12,7 @@ public class Juego extends InterfaceJuego {
 	private Entorno entorno;
 	private Mikasa mikasa;
 	private Tiempo tiempo;
+	private Suero suero;
 	private int cantObs;
 	private Obstaculos [] obs;
 	
@@ -19,6 +21,7 @@ public class Juego extends InterfaceJuego {
 		this.entorno = new Entorno(this, "Sakura Ikebana Delivery - Grupo 12 - Huayta - Rampazzo -Apellido3 - V0.01", 800, 600);
 		this.mikasa = new Mikasa(400, 300, 40, 40,0);
 		this.tiempo = new Tiempo(true, 0);
+		this.suero = new Suero(0, 0, 0);
 		this.cantObs=5;
 		this.iniciarObs();
 		// Inicializar lo que haga falta para el juego
@@ -46,8 +49,27 @@ public class Juego extends InterfaceJuego {
 		
 			if (entorno.estaPresionada('d'))
 				mikasa.moverDerecha();
-		
+			
+			if (suero.colision(mikasa.getX(), mikasa.getY(), suero.getX(), suero.getY(), suero.getRadio())) {
+				suero.setX(0);
+				suero.setY(0);
+				suero.setRadio(0);
+			}
+			
+			//apariciones del suero			
+			if (tiempo.getContar() == 0.015 || (int) tiempo.getContar() == 19) {
+				suero.setX(Math.random() * 800);
+				suero.setY(Math.random() * 600);
+				suero.setRadio(30);
+			}
+			
+			//dibujar
 			mikasa.dibujar(entorno);
+			
+			if (((int) tiempo.getContar() > 10 && (int) tiempo.getContar() < 18)
+			 || ((int) tiempo.getContar() > 20 && (int) tiempo.getContar() < 28)) {
+				suero.dibujar(entorno);
+			}
 		
 			for (Obstaculos o: this.obs) {
 				o.dibujar(entorno);
@@ -60,7 +82,7 @@ public class Juego extends InterfaceJuego {
 			//System.out.println(tiempo.getContar());
 			
 			//marca fin del juego
-			if (tiempo.getContar() >= 30 && tiempo.getContar() <= 31) {
+			if ((int) tiempo.getContar() > 40) {
 				this.tiempo = new Tiempo(false, 0);
 			}
 		} else {
