@@ -1,40 +1,54 @@
 package juego;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 import entorno.Entorno;
+import utils.Lista;
 
 public class Mikasa {
 	private double x;
 	private double y;
-	private double ancho;
-	private double alto;
+	private double radio;
 	private double angulo;
-	private double velocidad;
-	private int estado;
+	private double distancia;
+	private Lista<Disparo> disparos;
+	private int ultimoDisparo;
 
-	public Mikasa(double x, double y, double ancho, double alto, double angulo) {
+
+	public Mikasa(double x, double y, double radio, double angulo) {
 		this.x = x;
 		this.y = y;
-		this.ancho = ancho;
-		this.alto = alto;
+		this.radio = radio;
 		this.angulo = angulo;
-		this.velocidad=1.5;
-		this.estado=0;
+		this.disparos = new Lista<Disparo>();
+
 	}
 
 	public void dibujar(Entorno e) {
-		e.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, this.angulo, Color.ORANGE);
+		e.dibujarCirculo(this.x, this.y, this.radio, Color.ORANGE);
 	}
 
 	// movimiento
 	public void moverAdelante() {
-		if(this.estado==0) {
-			this.x += Math.cos(this.angulo) * velocidad;
-			this.y += Math.sin(this.angulo) * velocidad;
+		if (this.x > 20 && ((this.x) < 820) && this.y < 590 && ((this.y) > -30)) {
+			this.x += Math.cos(this.angulo) * 1.5;
+			this.y += Math.sin(this.angulo) * 1.5;
+		}
+		if (this.x <= 20) {
+			this.x = this.x + 5;
+		}
+		if ((this.x) >= 800) {
+			this.x = this.x - 5;
+		}
+		if (this.y >= 580) {
+			this.y = this.y - 5;
+		}
+		if ((this.y) <= 0) {
+			this.y = this.y + 5;
 		}
 	}
-	
+
 	public void moverDerecha() {
 		this.angulo += 0.08;
 	}
@@ -44,54 +58,32 @@ public class Mikasa {
 	}
 
 	public void moverAtras() {
-		if (this.estado==0){
-			this.x -= Math.cos(this.angulo) * velocidad;
-			this.y -= Math.sin(this.angulo) * velocidad;
-		}
+		this.x -= Math.cos(this.angulo) * 1.5;
+		this.y -= Math.sin(this.angulo) * 1.5;
+
 	}
-	public void colisionPantalla() {
-		if (this.x <= 20) {
-			this.x = this.x + 2;
-		}
-		if ((this.x + this.ancho) >= 820) {
-			this.x = this.x - 2;
-		}
-		if (this.y >= 580) {
-			this.y = this.y - 2;
-		}
-		if ((this.y - this.alto) <= -20) {
-			this.y = this.y + 2;
-		}
+
+	public void distancia(double x1, double y1, double x2, double y2) {
+		this.distancia = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	}
 	
-	public void colisionObs(double x, double y, double ancho, double alto) {
-		if (this.x <= x+ancho) {
-			this.estado = 1;
-			this.x=this.x+2;
-		}
-		if (this.x + this.ancho >= x) {
-			this.estado=1;
-			this.x = this.x - 2;
-		}
-		
-		if (this.y >= y-alto) {
-			this.estado=1;
-			this.y = this.y - 2;
-		}
-		if (this.y - this.alto <= y) {
-			this.estado=1;
-			this.y = this.y + 2;
-		}
-		this.estado=0;
+	public void disparar(int contadorTicks) {
+		this.disparos.agregarAtras(new Disparo(this.x, this.y, this.angulo));
+		this.ultimoDisparo = contadorTicks;
+	}
+	
+	public int getUltimoDisparo() {
+		return this.ultimoDisparo;
+	}
+	public Lista<Disparo> getDisparos() {
+		return this.disparos;
 	}
 
-
-	public boolean colision(double xIzq, double xDer, double yAba, double yArr) {
-		boolean tocandoX = xIzq <= this.x + this.ancho && this.x <= xDer;
-		boolean tocandoY = yAba >= this.y + this.alto && this.y >= yArr;
-		return tocandoX && tocandoY;
+	public void setRayos(Lista<Disparo> disparos) {
+		this.disparos = disparos;
 	}
 
+//	getters and setters
 	public double getX() {
 		return x;
 	}
@@ -108,20 +100,12 @@ public class Mikasa {
 		this.y = y;
 	}
 
-	public double getAncho() {
-		return ancho;
+	public double getRadio() {
+		return radio;
 	}
 
-	public void setAncho(double ancho) {
-		this.ancho = ancho;
-	}
-
-	public double getAlto() {
-		return alto;
-	}
-
-	public void setAlto(double alto) {
-		this.alto = alto;
+	public void setRadio(double radio) {
+		this.radio = radio;
 	}
 
 	public double getAngulo() {
@@ -130,6 +114,14 @@ public class Mikasa {
 
 	public void setAngulo(double angulo) {
 		this.angulo = angulo;
+	}
+
+	public double getDistancia() {
+		return distancia;
+	}
+
+	public void setDistancia(double distancia) {
+		this.distancia = distancia;
 	}
 
 }
