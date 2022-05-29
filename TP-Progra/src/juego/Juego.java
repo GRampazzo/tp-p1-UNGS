@@ -33,7 +33,7 @@ public class Juego extends InterfaceJuego {
 
 	public Juego() {
 		// Inicializa el objeto entorno
-		this.entorno = new Entorno(this, "Sakura Ikebana Delivery - Grupo N - Apellido1 - Apellido2 -Apellido3 - V0.01",
+		this.entorno = new Entorno(this, "Sakura Ikebana Delivery - Grupo 12 - Rampazzo - Huayta - V0.01",
 				800, 600);
 		this.mikasa = new Mikasa(400, 300, 40, 0, false);
 		this.suero = new Suero(0);
