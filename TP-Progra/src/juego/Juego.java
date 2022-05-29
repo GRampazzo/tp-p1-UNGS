@@ -324,6 +324,7 @@ public class Juego extends InterfaceJuego {
 
 	private void procesarTitan() {
 		this.titanes.forEachNodo(nodoTitan -> {
+			colisionTitanes(nodoTitan);
 			if (nodoTitan.getElemento().getImpacto()==false) {
 				nodoTitan.getElemento().direccionTitan(this.mikasa.getX(), this.mikasa.getY());
 				nodoTitan.getElemento().dibujar2(this.entorno);
@@ -360,6 +361,19 @@ public class Juego extends InterfaceJuego {
 		});
 	}
 	
+	private void colisionTitanes(Nodo<Titan> t2) {
+		this.titanes.forEachNodo(titan ->{ 
+			Titan t=titan.getElemento();
+			Titan otro=t2.getElemento();
+			if (titan.getId()!=t2.getId()) {
+				t.distancia(t.getX(),t.getY(),otro.getX(), otro.getY());
+				if (t.colisiona(t.getRadio(),otro.getRadio(), t.getDistancia()) && t.getDistancia()<60){
+					t.rebotar(t, otro);
+				}
+			}
+			return null;
+		});
+	}
 	public static void main(String[] args) {
 		Juego juego = new Juego();
 	}

@@ -49,6 +49,22 @@ public class Titan {
 		this.distancia = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	}
 	
+	public void rebotar(Titan t1, Titan t2) {
+		if (t1.getX() <= t2.getX() && t1.getY() <= t2.getY()) {
+			t1.setX(t1.getX() - 2);
+			t1.setY(t1.getY() - 2);
+		} else if (t1.getX() >= t2.getX() && t1.getY() >= t2.getY()) {
+			t1.setX(t1.getX() + 2);
+			t1.setY(t1.getY() + 2);
+		} else if (t1.getX() >= t2.getX() && t1.getY() <= t2.getY()) {
+			t1.setX(t1.getX() + 2);
+			t1.setY(t1.getY() - 2);
+		} else if (t1.getX() <= t2.getX() && t1.getY() >= t2.getY()) {
+			t1.setX(t1.getX() - 2);
+			t1.setY(t1.getY() + 2);
+		}
+	}
+	
 //	getters and setters
 	public double getX() {
 		return x;
