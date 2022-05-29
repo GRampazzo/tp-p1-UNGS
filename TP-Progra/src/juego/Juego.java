@@ -139,7 +139,9 @@ public class Juego extends InterfaceJuego {
 				
 			}
 				
-			
+			for (Obstaculos2 obs : this.obstaculos.getObstaculos2()) {
+				impactoObs(obs);
+			}
 
 //			controla el fin del juego
 //			if ((int) tiempo.getContar() > 40) {
@@ -315,6 +317,17 @@ public class Juego extends InterfaceJuego {
 				titan.getElemento().setImpacto(true);
 				this.puntos+=15;
 				this.eliminados+=1;
+			}
+			return null;
+		});
+	}
+	
+	private void impactoObs(Obstaculos2 obs) {
+		this.disparos.forEachNodo(disparo -> {
+			Disparo dis = disparo.getElemento();
+			dis.distancia(dis.getX(),dis.getY(),obs.getX(), obs.getY());
+			if (dis.colisiona(obs.getRadio(),dis.getRadio(), dis.getDistancia())) {
+				dis.setImpacto(true);
 			}
 			return null;
 		});
