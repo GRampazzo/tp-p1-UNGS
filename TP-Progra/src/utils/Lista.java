@@ -3,7 +3,7 @@ package utils;
 import java.util.function.Function;
 
 public class Lista<T> {
-	Nodo<T> primero;
+	private Nodo<T> primero;
 	private int proximoId;
 
 	public Lista() {
@@ -15,8 +15,8 @@ public class Lista<T> {
 		Nodo<T> actual = this.primero;
 		System.out.print("[");
 		while (actual != null) {
-			System.out.print(actual.id + " ");
-			actual = actual.siguiente;
+			System.out.print(actual.getId() + " ");
+			actual = actual.getSiguiente();
 		}
 		System.out.println("]");
 	}
@@ -28,10 +28,10 @@ public class Lista<T> {
 			this.primero = nuevo;
 		} else {
 			Nodo<T> actual = this.primero;
-			while (actual.siguiente != null) {
-				actual = actual.siguiente;
+			while (actual.getSiguiente() != null) {
+				actual = actual.getSiguiente();
 			}
-			actual.siguiente = nuevo;
+			actual.setSiguiente(nuevo);
 		}
 	}
 
@@ -41,7 +41,7 @@ public class Lista<T> {
 		if (this.primero == null) {
 			this.primero = nuevo;
 		} else {
-			nuevo.siguiente = this.primero;
+			nuevo.setSiguiente(this.primero);
 			this.primero = nuevo;
 		}
 	}
@@ -51,7 +51,7 @@ public class Lista<T> {
 		int cant = 0;
 		while (actual != null) {
 			cant++;
-			actual = actual.siguiente;
+			actual = actual.getSiguiente();
 		}
 		return cant;
 	}
@@ -59,43 +59,43 @@ public class Lista<T> {
 	public void quitarDePosicion(int pos) {
 		Nodo<T> actual = this.primero;
 		if (this.primero != null && pos == 0) {
-			this.primero = this.primero.siguiente;
+			this.primero = this.primero.getSiguiente();
 		}
 		if (pos >= this.largo())
 			return;
 		int i = 1;
-		while (actual != null && actual.siguiente != null) {
+		while (actual != null && actual.getSiguiente() != null) {
 			if (i == pos) {
-				actual.siguiente = actual.siguiente.siguiente;
+				actual.setSiguiente(actual.getSiguiente().getSiguiente());
 				return;
 			}
-			actual = actual.siguiente;
+			actual = actual.getSiguiente();
 			i++;
 		}
 	}
 
 	public void quitarPorId(int id) {
 		Nodo<T> actual = this.primero;
-		if (this.primero != null && this.primero.id == id) {
-			this.primero = this.primero.siguiente;
+		if (this.primero != null && this.primero.getId() == id) {
+			this.primero = this.primero.getSiguiente();
 		}
-		while (actual != null && actual.siguiente != null) {
-			if (actual.siguiente.id == id) {
-				actual.siguiente = actual.siguiente.siguiente;
+		while (actual != null && actual.getSiguiente() != null) {
+			if (actual.getSiguiente().getId() == id) {
+				actual.setSiguiente(actual.getSiguiente().getSiguiente());
 				return;
 			}
-			actual = actual.siguiente;
+			actual = actual.getSiguiente();
 		}
 	}
 
 	public T obtenerDePosicion(int pos) {
 		Nodo<T> actual = this.primero;
 		int i = 0;
-		while (actual != null && actual.siguiente != null) {
+		while (actual != null && actual.getSiguiente() != null) {
 			if (i == pos) {
-				return actual.elemento;
+				return actual.getElemento();
 			}
-			actual = actual.siguiente;
+			actual = actual.getSiguiente();
 			i++;
 		}
 		return null;
@@ -103,11 +103,11 @@ public class Lista<T> {
 
 	public T obtenerPorId(int id) {
 		Nodo<T> actual = this.primero;
-		while (actual != null && actual.siguiente != null) {
-			if (actual.id == id) {
-				return actual.elemento;
+		while (actual != null && actual.getSiguiente() != null) {
+			if (actual.getId() == id) {
+				return actual.getElemento();
 			}
-			actual = actual.siguiente;
+			actual = actual.getSiguiente();
 		}
 		return null;
 	}
@@ -116,15 +116,32 @@ public class Lista<T> {
 		Nodo<T> actual = this.primero;
 		while (actual != null) {
 			callback.apply(actual);
-			actual = actual.siguiente;
+			actual = actual.getSiguiente();
 		}
 	}
 
 	public void forEachElement(Function<T, Void> callback) {
 		Nodo<T> actual = this.primero;
 		while (actual != null) {
-			callback.apply(actual.elemento);
-			actual = actual.siguiente;
+			callback.apply(actual.getElemento());
+			actual = actual.getSiguiente();
 		}
 	}
+//	getters y setters
+	public Nodo<T> getPrimero() {
+		return primero;
+	}
+
+	public void setPrimero(Nodo<T> primero) {
+		this.primero = primero;
+	}
+
+	public int getProximoId() {
+		return proximoId;
+	}
+
+	public void setProximoId(int proximoId) {
+		this.proximoId = proximoId;
+	}
+	
 }

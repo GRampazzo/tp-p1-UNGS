@@ -3,11 +3,12 @@ package utils;
 public class Tiempo {
 	private boolean inicia;
 	private double contar;
-	
-	public Tiempo(boolean inicia, double cont) {
+	private double timer;
+
+	public Tiempo(boolean inicia, double cont, double timer) {
 		this.inicia = inicia;
 		this.contar = cont;
-		
+		this.timer = timer;
 	}
 
 //	getters and setters
@@ -27,4 +28,13 @@ public class Tiempo {
 	public void setContar(double contar) {
 		this.contar += contar;
 	}
+
+	public double getTimer() {
+		return timer;
+	}
+
+	public void setTimer(double timer) {
+		this.timer -= timer;
+	}
+
 }
