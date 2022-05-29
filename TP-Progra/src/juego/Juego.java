@@ -372,7 +372,7 @@ public class Juego extends InterfaceJuego {
 			Titan otro = t2.getElemento();
 			if (titan.getId() != t2.getId()) {
 				t.distancia(t.getX(), t.getY(), otro.getX(), otro.getY());
-				if (t.colisiona(t.getRadio(), otro.getRadio(), t.getDistancia()) && t.getDistancia() < 60) {
+				if (t.colisiona(t.getRadio(), otro.getRadio(), t.getDistancia()) && t.getDistancia() < 100) {
 					t.rebotar(t, otro);
 				}
 			}
