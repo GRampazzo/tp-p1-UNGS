@@ -123,7 +123,6 @@ public class Juego extends InterfaceJuego {
 						mikasa.getRadio(), ttn.getElemento().getDistancia())
 						&& ttn.getElemento().getDistancia() <= 50) {
 					tiempo.setInicia(false);
-					tiempo.setTimer(1);
 				}
 				if (mikasa.isConvertir() && ttn.getElemento().colisiona(ttn.getElemento().getRadio(),
 						mikasa.getRadio(), ttn.getElemento().getDistancia())
