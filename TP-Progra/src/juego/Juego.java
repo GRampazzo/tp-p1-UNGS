@@ -64,7 +64,11 @@ public class Juego extends InterfaceJuego {
 		// ...
 
 		if (tiempo.isInicia()) {
-
+			
+			if ((int) tiempo.getTimer()==0) {
+				tiempo.setInicia(false);
+			}
+			
 //			dibujar
 			entorno.dibujarImagen(this.imageFondo, 400, 400, 0, 1.7);
 			mikasa.dibujarSprite(entorno);
