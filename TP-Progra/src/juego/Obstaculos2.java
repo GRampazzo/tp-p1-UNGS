@@ -22,9 +22,6 @@ public class Obstaculos2 {
 		e.dibujarImagen(image, x + 30, y + 5, 0, 1.2/* 1.2 */);
 	}
 
-	public void dibujar2(Entorno e) {
-		e.dibujarCirculo(this.x, this.y, this.radio, Color.BLUE);
-	}
 
 	// getters and setters
 	public double getX() {

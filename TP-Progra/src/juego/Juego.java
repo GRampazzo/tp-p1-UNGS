@@ -312,7 +312,7 @@ public class Juego extends InterfaceJuego {
 				disparo.getElemento().dibujarSprite(this.entorno);
 				disparo.getElemento().mover();
 			}
-			if (disparo.getElemento().getImpacto()==true) {
+			if (disparo.getElemento().getImpacto()==true || !disparo.getElemento().estaEnPantalla()) {
 				this.disparos.quitarPorId(disparo.getId());
 			}
 			return null;
@@ -331,7 +331,7 @@ public class Juego extends InterfaceJuego {
 			colisionTitanes(nodoTitan);
 			if (nodoTitan.getElemento().getImpacto()==false) {
 				nodoTitan.getElemento().direccionTitan(this.mikasa.getX(), this.mikasa.getY());
-				nodoTitan.getElemento().dibujar2(this.entorno);
+				nodoTitan.getElemento().dibujar(this.entorno);
 				nodoTitan.getElemento().moverTitan();}
 			if (nodoTitan.getElemento().getImpacto()==true) {
 				this.titanes.quitarPorId(nodoTitan.getId());

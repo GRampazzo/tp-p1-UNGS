@@ -40,9 +40,6 @@ public class Suero {
 		this.distancia = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	}
 
-	public void distancia2(double x1, double y1, double x2, double y2) {
-		this.distancia2 = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-	}
 
 //	getters and setters
 	public double getX() {
@@ -92,14 +89,5 @@ public class Suero {
 	public void setAux(Image aux) {
 		this.aux = aux;
 	}
-
-	public double getDistancia2() {
-		return distancia2;
-	}
-
-	public void setDistancia2(double distancia2) {
-		this.distancia2 = distancia2;
-	}
-
 	
 }

@@ -23,10 +23,6 @@ public class Titan {
 	}
 
 	public void dibujar(Entorno e) {
-		e.dibujarCirculo(this.x, this.y, this.radio, Color.RED);
-	}
-
-	public void dibujar2(Entorno e) {
 		e.dibujarImagen(image, x, y, 0, 0.15);
 	}
 

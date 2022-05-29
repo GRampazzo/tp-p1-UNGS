@@ -18,10 +18,6 @@ public class Disparo {
 		this.angulo = angulo;
 	}
 
-	public void dibujar(Entorno e) {
-		e.dibujarCirculo(this.x, this.y, this.radio, Color.WHITE);
-	}
-	
 	public void dibujarSprite(Entorno e) {
 		e.dibujarImagen(image, x, y-1, angulo,0.1);
 	}
@@ -40,7 +36,7 @@ public class Disparo {
 	}
 	
 	public boolean estaEnPantalla() {
-		return colisiona(0,0,0);
+		return (this.x<800 && this.x>0 && this.y<600 && this.y>0);
 	}
 	
 	
