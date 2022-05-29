@@ -1,6 +1,5 @@
 package juego;
 
-
 import java.awt.Image;
 import entorno.Entorno;
 import entorno.Herramientas;
@@ -28,15 +27,12 @@ public class Mikasa {
 		this.disparos = new Lista<Disparo>();
 	}
 
-//	public void dibujar(Entorno e) {
-//		e.dibujarCirculo(this.x, this.y, this.radio, Color.ORANGE);
-//	}
 
 	public void dibujarSprite(Entorno e) {
 		if (this.convertir) {
-			e.dibujarImagen(this.image2, x + 5, y, angulo, 0.1);
+			e.dibujarImagen(this.image2, this.x + 5, this.y, this.angulo, 0.1);
 		} else {
-			e.dibujarImagen(image, this.x, this.y, this.angulo, 0.1);
+			e.dibujarImagen(this.image, this.x, this.y, this.angulo, 0.1);
 		}
 	}
 
@@ -44,7 +40,7 @@ public class Mikasa {
 		this.disparos.agregarAtras(new Disparo(this.x, this.y, 10, this.angulo));
 		this.ultimoDisparo = contadorTicks;
 	}
-
+ 
 	// movimiento
 	public void moverAdelante() {
 		this.sentido = 0;
@@ -118,7 +114,7 @@ public class Mikasa {
 			this.y += 5;
 		}
 	}
-	
+
 	public void distancia(double x1, double y1, double x2, double y2) {
 		this.distancia = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	}
