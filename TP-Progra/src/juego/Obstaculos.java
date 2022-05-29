@@ -1,7 +1,7 @@
 package juego;
 
 public class Obstaculos {
-	public Obstaculos2[] obstaculos2;
+	private Obstaculos2[] obstaculos2;
 	private double distancia;
 
 	public Obstaculos(int tamanio) {
@@ -21,7 +21,7 @@ public class Obstaculos {
 		if (this.obstaculos2[3] == null) {
 			this.obstaculos2[3] = new Obstaculos2(700, 350, 70);
 		}
-		if(this.obstaculos2[4] == null){
+		if (this.obstaculos2[4] == null) {
 			this.obstaculos2[4] = new Obstaculos2(440, 200, 70);
 		}
 
