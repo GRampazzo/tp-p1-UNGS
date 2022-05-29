@@ -23,7 +23,7 @@ public class Juego extends InterfaceJuego {
 	private Lista<Disparo> disparos;
 	private Obstaculos obstaculos;
 	private boolean item;
-	private Lista<Titan2> titanes;
+	private Lista<Titan> titanes;
 	private int tickUltimoTitan;
 	private int puntos;
 	private int eliminados;
@@ -41,7 +41,7 @@ public class Juego extends InterfaceJuego {
 		this.obstaculos.generarObs();
 		this.item = false;
 		this.tickUltimoTitan = -1;
-		this.titanes = new Lista<Titan2>();
+		this.titanes = new Lista<Titan>();
 		this.puntos=0;
 		this.eliminados=0;
 
@@ -111,33 +111,47 @@ public class Juego extends InterfaceJuego {
 //			por cada obstaculo chequea la distancia entre el titan y el obs, si el metodo colisiona es true,
 //			y la distancia entre los circulos es menor a 100, resta o suma en sus respectivos X e Y. del titan
 			for (Obstaculos2 obs : this.obstaculos.getObstaculos2()) {
-				this.titanes.forEachNodo(ttn -> {
-					obstaculos.distancia(obs.getX(), obs.getY(), ttn.getElemento().getX(), ttn.getElemento().getY());
-					if (obstaculos.colisiona(obs.getRadio(), ttn.getElemento().getRadio(), obstaculos.getDistancia())
-							&& obstaculos.getDistancia() <= 70) {
-						titanChocaObs(ttn.getElemento(), obs);
-					}
-					obs.dibujarSprite(entorno);
-					ttn.getElemento().dibujar2(entorno);
-					return null;
-				});
-			}
+			this.titanes.forEachNodo(ttn -> {
+				ttn.getElemento().distancia(ttn.getElemento().getX(), ttn.getElemento().getY(), mikasa.getX(),
+						mikasa.getY());
+				obstaculos.distancia(obs.getX(), obs.getY(), ttn.getElemento().getX(), ttn.getElemento().getY());
+				if (obstaculos.colisiona(obs.getRadio(), ttn.getElemento().getRadio(), obstaculos.getDistancia())
+						&& obstaculos.getDistancia() <= 100) {
+					titanChocaObs(ttn.getElemento(), obs);
+				}
+				if (!mikasa.isConvertir() && ttn.getElemento().colisiona(ttn.getElemento().getRadio(),
+						mikasa.getRadio(), ttn.getElemento().getDistancia())
+						&& ttn.getElemento().getDistancia() <= 50) {
+					tiempo.setInicia(false);
+					tiempo.setTimer(1);
+				}
+				if (mikasa.isConvertir() && ttn.getElemento().colisiona(ttn.getElemento().getRadio(),
+						mikasa.getRadio(), ttn.getElemento().getDistancia())
+						&& ttn.getElemento().getDistancia() <= 100) {
+					mikasaChocaTtn(ttn);
+				}
+
+				obs.dibujarSprite(entorno);
+				ttn.getElemento().dibujar2(entorno);
+				return null;
+			});
+//				obs.dibujar2(entorno);
+		}
 			
 			
 //			lo mismo pero con mikasa
 			for (Obstaculos2 obs : this.obstaculos.getObstaculos2()) {
-				obstaculos.distancia(obs.getX(), obs.getY(), mikasa.getX(), mikasa.getY());
-				if (!mikasa.convertir
-						&& obstaculos.colisiona(obs.getRadio(), mikasa.getRadio(), obstaculos.getDistancia())
-						&& obstaculos.getDistancia() <= 70) {
-					mikasaChocaObs(obs);
-				} else if (mikasa.convertir
-						&& obstaculos.colisiona(obs.getRadio(), mikasa.getRadio(), obstaculos.getDistancia())
-						&& obstaculos.getDistancia() <= 85) {
-					mikasaChocaObs(obs);
-				}
-				
+			obstaculos.distancia(obs.getX(), obs.getY(), mikasa.getX(), mikasa.getY());
+			if (!mikasa.isConvertir()
+					&& obstaculos.colisiona(obs.getRadio(), mikasa.getRadio(), obstaculos.getDistancia())
+					&& obstaculos.getDistancia() <= 70) {
+				mikasaChocaObs(obs);
+			} else if (mikasa.isConvertir()
+					&& obstaculos.colisiona(obs.getRadio(), mikasa.getRadio(), obstaculos.getDistancia())
+					&& obstaculos.getDistancia() <= 85) {
+				mikasaChocaObs(obs);
 			}
+		}
 				
 			for (Obstaculos2 obs : this.obstaculos.getObstaculos2()) {
 				impactoObs(obs);
@@ -154,7 +168,7 @@ public class Juego extends InterfaceJuego {
 
 //			diujar datos
 			entorno.cambiarFont("Arial Black", 25, Color.BLACK);
-			entorno.escribirTexto("KYOJINES ELIMINADOS: " + this.eliminados, 4, 588);
+			entorno.escribirTexto("KYOJINES ELIMINADOS: " + 0, 4, 588);
 			entorno.cambiarFont("Arial Black", 25, Color.WHITE);
 			entorno.escribirTexto("TIEMPO: " + (int) tiempo.getTimer(), 620, 23);
 			entorno.escribirTexto("PUNTAJE: " + this.puntos, 4, 23);
@@ -162,11 +176,13 @@ public class Juego extends InterfaceJuego {
 		} else {
 			entorno.cambiarFont("Arial", 32, Color.WHITE);
 			entorno.escribirTexto("GAME OVER", 300, 300);
+			entorno.cambiarFont("Arial", 25, Color.WHITE);
+			entorno.escribirTexto("PUNTAJE TOTAL: " + this.puntos, 270, 330);
 		}
 	}
 
 //	metodos 
-	public void titanChocaObs(Titan2 ttn, Obstaculos2 obs) {
+	public void titanChocaObs(Titan ttn, Obstaculos2 obs) {
 		if (ttn.getX() <= obs.getX() && ttn.getY() <= obs.getY()) {
 			ttn.setX(ttn.getX() - 2);
 			ttn.setY(ttn.getY() - 2);
@@ -181,13 +197,23 @@ public class Juego extends InterfaceJuego {
 			ttn.setY(ttn.getY() + 2);
 		}
 	}
+	
+	public <T> void mikasaChocaTtn(Nodo<T> ttn) {
+	for (int i = 0; i < this.titanes.largo(); i++) {
+		if (ttn.getId() == i && mikasa.isConvertir()) {
+			titanes.quitarPorId(i);
+			mikasa.setConvertir(false);
+			mikasa.setRadio(40);
+			this.puntos += 50;
+		}
+	}
+
+}
 
 	public void mikasaChocaObs(Obstaculos2 obs) {
 		if (mikasa.getX() <= obs.getX() && mikasa.getY() <= obs.getY()) {
 			mikasa.setX(mikasa.getX() - 2);
 			mikasa.setY(mikasa.getY() - 2);
-			// mikasa.setConvertir(false); esto iria cuando choque con un titan (aca no,
-			// obvio)
 		} else if (mikasa.getX() >= obs.getX() && mikasa.getY() >= obs.getY()) {
 			mikasa.setX(mikasa.getX() + 2);
 			mikasa.setY(mikasa.getY() + 2);
@@ -290,7 +316,7 @@ public class Juego extends InterfaceJuego {
 	
 	private void crearTitan() {
 		if (this.tickUltimoTitan == -1 || this.tickUltimoTitan + 50 < tiempo.getContar()) {
-			this.titanes.agregarAtras(new Titan2(Math.random() * (100 - 700) + 700, Math.random() * (50 - 500) + 500, 60, 0));
+			this.titanes.agregarAtras(new Titan(Math.random() * (100 - 700) + 700, Math.random() * (50 - 500) + 500, 120, 0));
 			this.tickUltimoTitan = (int) tiempo.getContar();
 		}
 	}
@@ -308,11 +334,11 @@ public class Juego extends InterfaceJuego {
 		});
 	}
 	
-	private void impactoTitan(Nodo<Titan2> titan) {
+	private void impactoTitan(Nodo<Titan> titan) {
 		this.disparos.forEachNodo(disparo -> {
 			Disparo dis = disparo.getElemento();
 			dis.distancia(dis.getX(),dis.getY(),titan.getElemento().getX(), titan.getElemento().getY());
-			if (titan.getElemento().colisiona(titan.getElemento().getRadio(),dis.getRadio(), dis.getDistancia())) {
+			if (titan.getElemento().colisiona(titan.getElemento().getRadio(),dis.getRadio(), dis.getDistancia()) && dis.getDistancia() < 60) {
 				dis.setImpacto(true);
 				titan.getElemento().setImpacto(true);
 				this.puntos+=15;
@@ -326,7 +352,7 @@ public class Juego extends InterfaceJuego {
 		this.disparos.forEachNodo(disparo -> {
 			Disparo dis = disparo.getElemento();
 			dis.distancia(dis.getX(),dis.getY(),obs.getX(), obs.getY());
-			if (dis.colisiona(obs.getRadio(),dis.getRadio(), dis.getDistancia())) {
+			if (dis.colisiona(obs.getRadio(),dis.getRadio(), dis.getDistancia()) && dis.getDistancia() < 50) {
 				dis.setImpacto(true);
 			}
 			return null;
