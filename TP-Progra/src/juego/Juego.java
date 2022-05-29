@@ -10,6 +10,7 @@ import entorno.InterfaceJuego;
 import utils.Tiempo;
 import utils.Lista;
 import utils.Nodo;
+import javax.sound.sampled.Clip;
 
 @SuppressWarnings("unused")
 public class Juego extends InterfaceJuego {
@@ -27,6 +28,8 @@ public class Juego extends InterfaceJuego {
 	private int tickUltimoTitan;
 	private int puntos;
 	private int eliminados;
+	private Clip sonido;
+	private Clip sonido2;
 	
 	public Juego() {
 		// Inicializa el objeto entorno
@@ -44,7 +47,8 @@ public class Juego extends InterfaceJuego {
 		this.titanes = new Lista<Titan>();
 		this.puntos=0;
 		this.eliminados=0;
-
+		this.sonido = Herramientas.cargarSonido("musicaJuego2.wav");
+		this.sonido2 = Herramientas.cargarSonido("musicaGameOver.wav");
 
 		// Inicializar lo que haga falta para el juego
 		// ...
@@ -68,7 +72,7 @@ public class Juego extends InterfaceJuego {
 			if ((int) tiempo.getTimer()==0) {
 				tiempo.setInicia(false);
 			}
-			
+			this.sonido.start();
 //			dibujar
 			entorno.dibujarImagen(this.imageFondo, 400, 400, 0, 1.7);
 			mikasa.dibujarSprite(entorno);
@@ -167,7 +171,7 @@ public class Juego extends InterfaceJuego {
 
 //			tiempo.setContar(0.015);
 			tiempo.setContar(1);
-			tiempo.setTimer(0.0111101);
+			tiempo.setTimer(0.01111102);
 
 //			diujar datos
 			entorno.cambiarFont("Arial Black", 25, Color.BLACK);
@@ -181,6 +185,8 @@ public class Juego extends InterfaceJuego {
 			entorno.escribirTexto("GAME OVER", 300, 300);
 			entorno.cambiarFont("Arial", 25, Color.WHITE);
 			entorno.escribirTexto("PUNTAJE TOTAL: " + this.puntos, 270, 330);
+			this.sonido.close();
+			this.sonido2.start();
 		}
 	}
 
@@ -208,6 +214,7 @@ public class Juego extends InterfaceJuego {
 				mikasa.setConvertir(false);
 				mikasa.setRadio(40);
 				this.puntos += 50;
+				this.eliminados += 1;
 			}
 			return null;
 		});
