@@ -17,7 +17,7 @@ public class Mikasa {
 	private int ultimoDisparo;
 	private int sentido = 0;
 	private Image image = Herramientas.cargarImagen("mikasa1.png");
-	private Image image2 = Herramientas.cargarImagen("mikasa-Titan.png");
+	private Image image2 = Herramientas.cargarImagen("mikasaTitan.png");
 
 	public Mikasa(double x, double y, double radio, double angulo, boolean convertir) {
 		this.x = x;
