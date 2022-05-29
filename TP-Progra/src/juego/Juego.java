@@ -199,13 +199,15 @@ public class Juego extends InterfaceJuego {
 	}
 	
 	public <T> void mikasaChocaTtn(Nodo<T> ttn) {
-	for (int i = 0; i < this.titanes.largo(); i++) {
-		if (ttn.getId() == i && mikasa.isConvertir()) {
-			titanes.quitarPorId(i);
-			mikasa.setConvertir(false);
-			mikasa.setRadio(40);
-			this.puntos += 50;
-		}
+		this.titanes.forEachNodo(nodoTitan -> {
+			if (ttn.getId() == nodoTitan.getId() && mikasa.isConvertir()) {
+				this.titanes.quitarPorId(nodoTitan.getId());
+				mikasa.setConvertir(false);
+				mikasa.setRadio(40);
+				this.puntos += 50;
+			}
+			return null;
+		});
 	}
 
 }
