@@ -168,7 +168,7 @@ public class Juego extends InterfaceJuego {
 			
 //			diujar datos
 			entorno.cambiarFont("Arial Black", 25, Color.BLACK);
-			entorno.escribirTexto("KYOJINES ELIMINADOS: " + 0, 4, 588);
+			entorno.escribirTexto("KYOJINES ELIMINADOS: " + this.eliminados, 4, 588);
 			entorno.cambiarFont("Arial Black", 25, Color.WHITE);
 			entorno.escribirTexto("TIEMPO: " + (int) this.tiempo.getTimer(), 620, 23);
 			entorno.escribirTexto("PUNTAJE: " + this.puntos, 4, 23);
