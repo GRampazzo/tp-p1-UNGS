@@ -11,7 +11,7 @@ public class Mikasa {
 	private double radio;
 	private double angulo;
 	private double distancia;
-	boolean convertir = false;
+	private boolean convertir = false;
 	private Lista<Disparo> disparos;
 	private int ultimoDisparo;
 	private int sentido = 0;
