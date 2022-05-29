@@ -10,7 +10,6 @@ public class Suero {
 	private double y;
 	private double radio;
 	private double distancia;
-	private double distancia2;
 	private Image image = Herramientas.cargarImagen("Suero.png");
 	private Image aux = this.image;
 
