@@ -41,7 +41,7 @@ public class Mikasa {
 	}
 
 	public void disparar(int contadorTicks) {
-		this.disparos.agregarAtras(new Disparo(this.x, this.y, this.angulo));
+		this.disparos.agregarAtras(new Disparo(this.x, this.y, 10, this.angulo));
 		this.ultimoDisparo = contadorTicks;
 	}
 
@@ -118,7 +118,7 @@ public class Mikasa {
 			this.y += 5;
 		}
 	}
-
+	
 	public void distancia(double x1, double y1, double x2, double y2) {
 		this.distancia = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	}
@@ -196,7 +196,7 @@ public class Mikasa {
 		return this.disparos;
 	}
 
-	public void setRayos(Lista<Disparo> disparos) {
+	public void setDisparos(Lista<Disparo> disparos) {
 		this.disparos = disparos;
 	}
 }

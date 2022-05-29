@@ -11,7 +11,9 @@ public class Titan2 {
 	double y;
 	double radio;
 	double angulo;
+	double distancia;
 	Image image = Herramientas.cargarImagen("titan2.png");
+	private boolean impacto=false;
 
 	public Titan2(double x, double y, double radio, double angulo) {
 		this.x = x;
@@ -20,17 +22,17 @@ public class Titan2 {
 		this.angulo = angulo;
 	}
 
-//	public void dibujar(Entorno e) {
-//		e.dibujarCirculo(this.x, this.y, this.radio, Color.RED);
-//	}
+	public void dibujar(Entorno e) {
+		e.dibujarCirculo(this.x, this.y, this.radio, Color.RED);
+	}
 
 	public void dibujar2(Entorno e) {
 		e.dibujarImagen(image, x, y, 0, 0.15);
 	}
 
 	public void moverTitan() {
-		this.x -= Math.cos(this.angulo) * 0.05;
-		this.y -= Math.sin(this.angulo) * 0.05;
+		this.x -= Math.cos(this.angulo) * 0.5;
+		this.y -= Math.sin(this.angulo) * 0.5;
 	}
 
 	public void direccionTitan(double x, double y) {
@@ -38,7 +40,15 @@ public class Titan2 {
 		double dy = this.y - y;
 		this.angulo = Math.atan2(dy, dx);
 	}
+	
+	public boolean colisiona(double radio1, double radio2, double dist) {
+		return (radio1 + radio2) > dist;
+	}
 
+	public void distancia(double x1, double y1, double x2, double y2) {
+		this.distancia = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+	}
+	
 //	getters and setters
 	public double getX() {
 		return x;
@@ -59,7 +69,7 @@ public class Titan2 {
 	public double getRadio() {
 		return radio;
 	}
-
+	
 	public void setRadio(double radio) {
 		this.radio = radio;
 	}
@@ -78,6 +88,16 @@ public class Titan2 {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+	
+	public double getDistancia() {
+		return this.distancia;
+	}
+	public boolean getImpacto() {
+		return impacto;
+	}
+	public void setImpacto(boolean a) {
+		this.impacto=a;
 	}
 
 }

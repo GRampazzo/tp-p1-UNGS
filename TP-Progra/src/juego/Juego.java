@@ -20,12 +20,14 @@ public class Juego extends InterfaceJuego {
 	private Suero suero;
 	private Tiempo tiempo;
 	private Image imageFondo;
-	private Disparo[] disparos;
+	private Lista<Disparo> disparos;
 	private Obstaculos obstaculos;
 	private boolean item;
 	private Lista<Titan2> titanes;
 	private int tickUltimoTitan;
-
+	private int puntos;
+	private int eliminados;
+	
 	public Juego() {
 		// Inicializa el objeto entorno
 		this.entorno = new Entorno(this, "Sakura Ikebana Delivery - Grupo N - Apellido1 - Apellido2 -Apellido3 - V0.01",
@@ -33,13 +35,16 @@ public class Juego extends InterfaceJuego {
 		this.mikasa = new Mikasa(400, 300, 40, 0, false);
 		this.suero = new Suero(0);
 		this.tiempo = new Tiempo(true, 0, 60);
-		this.disparos = new Disparo[300];
+		this.disparos = this.mikasa.getDisparos();
 		this.imageFondo = Herramientas.cargarImagen("FondoSeis.jpg");
 		this.obstaculos = new Obstaculos(5);
 		this.obstaculos.generarObs();
 		this.item = false;
 		this.tickUltimoTitan = -1;
 		this.titanes = new Lista<Titan2>();
+		this.puntos=0;
+		this.eliminados=0;
+
 
 		// Inicializar lo que haga falta para el juego
 		// ...
@@ -63,10 +68,6 @@ public class Juego extends InterfaceJuego {
 //			dibujar
 			entorno.dibujarImagen(this.imageFondo, 400, 400, 0, 1.7);
 			mikasa.dibujarSprite(entorno);
-//			for (Titan2 ttn : this.titan.getTitan2()) {
-//				ttn.moverTitan();
-//				ttn.direccionTitan(mikasa.getX(), mikasa.getY());
-//			}
 
 //			instrucciones
 			if (entorno.estaPresionada('w') || entorno.estaPresionada(entorno.TECLA_ARRIBA))
@@ -85,25 +86,22 @@ public class Juego extends InterfaceJuego {
 			if (titanes.largo() < 6) {
 				crearTitan();
 			}
-
-			this.titanes.forEachNodo(titan -> {
-				procesarTitan();
+			
+			this.titanes.forEachNodo(titan->{
+				impactoTitan(titan);
 				return null;
 			});
 
+			procesarTitan();
+
 //			disparo
-			for (Disparo d : disparos) {
-				if (d != null) {
-					d.setX(mikasa.getX());
-					d.setY(mikasa.getY());
-					d.setAngulo(mikasa.getAngulo());
-				}
-			}
 			if (this.entorno.estaPresionada(this.entorno.TECLA_ESPACIO)
-					&& this.mikasa.getUltimoDisparo() + 90 <= this.tiempo.getContar() && !mikasa.convertir) {
+					&& this.mikasa.getUltimoDisparo() + 50 <= this.tiempo.getContar() && !mikasa.convertir) {
 				this.mikasa.disparar((int) this.tiempo.getContar());
 			}
+			
 			procesarDisparos();
+			
 
 //			suero
 			crearSuero();
@@ -123,9 +121,9 @@ public class Juego extends InterfaceJuego {
 					ttn.getElemento().dibujar2(entorno);
 					return null;
 				});
-//					obs.dibujar2(entorno);
 			}
-
+			
+			
 //			lo mismo pero con mikasa
 			for (Obstaculos2 obs : this.obstaculos.getObstaculos2()) {
 				obstaculos.distancia(obs.getX(), obs.getY(), mikasa.getX(), mikasa.getY());
@@ -138,7 +136,10 @@ public class Juego extends InterfaceJuego {
 						&& obstaculos.getDistancia() <= 85) {
 					mikasaChocaObs(obs);
 				}
+				
 			}
+				
+			
 
 //			controla el fin del juego
 //			if ((int) tiempo.getContar() > 40) {
@@ -151,10 +152,10 @@ public class Juego extends InterfaceJuego {
 
 //			diujar datos
 			entorno.cambiarFont("Arial Black", 25, Color.BLACK);
-			entorno.escribirTexto("KYOJINES ELIMINADOS: " + 0, 4, 588);
+			entorno.escribirTexto("KYOJINES ELIMINADOS: " + this.eliminados, 4, 588);
 			entorno.cambiarFont("Arial Black", 25, Color.WHITE);
 			entorno.escribirTexto("TIEMPO: " + (int) tiempo.getTimer(), 620, 23);
-			entorno.escribirTexto("PUNTAJE: " + 0, 4, 23);
+			entorno.escribirTexto("PUNTAJE: " + this.puntos, 4, 23);
 
 		} else {
 			entorno.cambiarFont("Arial", 32, Color.WHITE);
@@ -272,40 +273,53 @@ public class Juego extends InterfaceJuego {
 		}
 	}
 
-	private void moverDisparo(Nodo<Disparo> nodoDisparo) {
-		nodoDisparo.getElemento().mover();
-		nodoDisparo.getElemento().dibujarSprite(this.entorno);
-//		nodoDisparo.getElemento().dibujar(entorno);
-		if (!nodoDisparo.getElemento().estaEnPantalla()) {
-			this.mikasa.getDisparos().quitarPorId(nodoDisparo.getId());
-		}
-	}
-
 	private void procesarDisparos() {
 		this.mikasa.getDisparos().forEachNodo(disparo -> {
-			this.moverDisparo(disparo);
+			if (disparo.getElemento().getImpacto()==false) {
+				disparo.getElemento().dibujarSprite(this.entorno);
+				disparo.getElemento().mover();
+			}
+			if (disparo.getElemento().getImpacto()==true) {
+				this.disparos.quitarPorId(disparo.getId());
+			}
 			return null;
 		});
 	}
-
+	
 	private void crearTitan() {
-		if (this.tickUltimoTitan == -1 || this.tickUltimoTitan + 250 < tiempo.getContar()) {
-			this.titanes.agregarAtras(
-					new Titan2(Math.random() * (100 - 700) + 700, Math.random() * (50 - 500) + 500, 120, 0));
+		if (this.tickUltimoTitan == -1 || this.tickUltimoTitan + 50 < tiempo.getContar()) {
+			this.titanes.agregarAtras(new Titan2(Math.random() * (100 - 700) + 700, Math.random() * (50 - 500) + 500, 60, 0));
 			this.tickUltimoTitan = (int) tiempo.getContar();
 		}
 	}
 
 	private void procesarTitan() {
 		this.titanes.forEachNodo(nodoTitan -> {
-			nodoTitan.getElemento().direccionTitan(this.mikasa.getX(), this.mikasa.getY());
-			nodoTitan.getElemento().dibujar2(this.entorno);
-			nodoTitan.getElemento().moverTitan();
-
+			if (nodoTitan.getElemento().getImpacto()==false) {
+				nodoTitan.getElemento().direccionTitan(this.mikasa.getX(), this.mikasa.getY());
+				nodoTitan.getElemento().dibujar2(this.entorno);
+				nodoTitan.getElemento().moverTitan();}
+			if (nodoTitan.getElemento().getImpacto()==true) {
+				this.titanes.quitarPorId(nodoTitan.getId());
+			}
 			return null;
 		});
 	}
-
+	
+	private void impactoTitan(Nodo<Titan2> titan) {
+		this.disparos.forEachNodo(disparo -> {
+			Disparo dis = disparo.getElemento();
+			dis.distancia(dis.getX(),dis.getY(),titan.getElemento().getX(), titan.getElemento().getY());
+			if (titan.getElemento().colisiona(titan.getElemento().getRadio(),dis.getRadio(), dis.getDistancia())) {
+				dis.setImpacto(true);
+				titan.getElemento().setImpacto(true);
+				this.puntos+=15;
+				this.eliminados+=1;
+			}
+			return null;
+		});
+	}
+	
 	public static void main(String[] args) {
 		Juego juego = new Juego();
 	}

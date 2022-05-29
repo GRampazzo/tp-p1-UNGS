@@ -7,19 +7,19 @@ import entorno.Entorno;
 import entorno.Herramientas;
 
 public class Disparo {
-	private double x, y, ancho, alto, angulo;
+	private double x, y, radio, angulo,distancia;
 	private Image image = Herramientas.cargarImagen("Proyectil.png");
+	private boolean impacto=false;
 	
-	public Disparo(double x, double y, double angulo) {
+	public Disparo(double x, double y, double radio ,double angulo) {
 		this.x = x;
 		this.y = y;
-		this.ancho = 30;
-		this.alto = 5;
+		this.radio= radio;
 		this.angulo = angulo;
 	}
 
 	public void dibujar(Entorno e) {
-		e.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, this.angulo, Color.WHITE);
+		e.dibujarCirculo(this.x, this.y, this.radio, Color.WHITE);
 	}
 	
 	public void dibujarSprite(Entorno e) {
@@ -27,36 +27,29 @@ public class Disparo {
 	}
 
 	public void mover() {
-		this.x += Math.cos(this.angulo) * 3;
-		this.y += Math.sin(this.angulo) * 3;
+		this.x += Math.cos(this.angulo) * 4;
+		this.y += Math.sin(this.angulo) * 4;
+	}
+	
+	public boolean colisiona(double radio1, double radio2, double dist) {
+		return (radio1 + radio2) > dist;
 	}
 
+	public void distancia(double x1, double y1, double x2, double y2) {
+		this.distancia = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+	}
+	
 	public boolean estaEnPantalla() {
-		return this.posicionExtremoDerecho() > 0 && this.posicionExtremoIzquierdo() < 800 && this.posicionYArriba() > 0
-				&& this.posicionYAbajo() < 600;
+		return colisiona(0,0,0);
 	}
-
-	public double posicionExtremoDerecho() {
-		return this.x + this.ancho / 2;
-	}
-
-	public double posicionExtremoIzquierdo() {
-		return this.x - this.ancho / 2;
-	}
-
-	public double posicionYArriba() {
-		return this.y - this.alto / 2;
-	}
-
-	public double posicionYAbajo() {
-		return this.y + this.alto / 2;
-	}
+	
+	
 
 //	getters and setters
 	public double getX() {
 		return x;
 	}
-
+	
 	public void setX(double x) {
 		this.x = x;
 	}
@@ -68,21 +61,13 @@ public class Disparo {
 	public void setY(double y) {
 		this.y = y;
 	}
-
-	public double getAlto() {
-		return this.alto;
+	
+	public double getRadio() {
+		return radio;
 	}
 
-	public void setAlto(double alto) {
-		this.alto = alto;
-	}
-
-	public double getAncho() {
-		return this.ancho;
-	}
-
-	public void setAncho(double ancho) {
-		this.ancho = ancho;
+	public void setRadio(double radio) {
+		this.radio = radio;
 	}
 
 	public double getAngulo() {
@@ -92,5 +77,15 @@ public class Disparo {
 	public void setAngulo(double angulo) {
 		this.angulo = angulo;
 	}
-
+	
+	public double getDistancia() {
+		return distancia;
+	}
+	
+	public boolean getImpacto() {
+		return impacto;
+	}
+	public void setImpacto(boolean a) {
+		this.impacto=a;
+	}
 }
