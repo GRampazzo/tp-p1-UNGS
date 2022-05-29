@@ -1,9 +1,9 @@
 package utils;
 
 public class Nodo<T> {
-	T elemento;
-	Nodo<T> siguiente;
-	int id;
+	private T elemento;
+	private Nodo<T> siguiente;
+	private int id;
 
 	public Nodo() {
 	}
@@ -21,4 +21,21 @@ public class Nodo<T> {
 	public int getId() {
 		return this.id;
 	}
+
+	public Nodo<T> getSiguiente() {
+		return siguiente;
+	}
+
+	public void setSiguiente(Nodo<T> siguiente) {
+		this.siguiente = siguiente;
+	}
+
+	public void setElemento(T elemento) {
+		this.elemento = elemento;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 }
