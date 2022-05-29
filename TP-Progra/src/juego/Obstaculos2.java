@@ -1,6 +1,5 @@
 package juego;
 
-import java.awt.Color;
 import java.awt.Image;
 
 import entorno.Entorno;
@@ -19,9 +18,8 @@ public class Obstaculos2 {
 	}
 
 	public void dibujarSprite(Entorno e) {
-		e.dibujarImagen(image, x + 30, y + 5, 0, 1.2/* 1.2 */);
+		e.dibujarImagen(this.image, this.x + 30, this.y + 5, 0, 1.2);
 	}
-
 
 	// getters and setters
 	public double getX() {
@@ -55,4 +53,5 @@ public class Obstaculos2 {
 	public void setImage(Image image) {
 		this.image = image;
 	}
+
 }
